@@ -4,46 +4,62 @@ from functools import partial
 
 
 
+
 root = Tk()
 root.title("BullRope")
+canvas = Canvas(root, width = 500, height = 500) #Fenster mit den Starrt buttons erstellen
 
 
-def movelabel(canvas,stier,event):
-    if event.char=="d":
+
+def movelabel(canvas,stier,event): #Funktion um den Stier zu bewegen 
+    if event.keysym=="Right":
         canvas.move(stier,10,0)
-    elif event.char=='a':
+    elif event.keysym=='Left':
         canvas.move(stier,-10,0)
-    elif event.char=='w':
-        canvas.move(stier,0,-10)
-    elif event.char=='s':
-        canvas.move(stier,0,10)
+
 
     [x,y] = canvas.coords(stier)
     if x <= 0:
-        canvas.move(stier, 1080, 0)
-    if x >= 1080:
-        canvas.move(stier, -1080, 0)
+        canvas.move(stier, 1920, 0)
+    if x >= 1920:
+        canvas.move(stier, -1920, 0)
     if y <= 0:
-        canvas.move(stier, 0, 1920)
-    if y >= 1920:
-        canvas.move(stier, 0, -1920)
+        canvas.move(stier, 0, 1080)
+    if y >= 1080:
+        canvas.move(stier, 0, -1080)
 
-bg = PhotoImage(file="background1.png")
+def delay():
+    hello = Label(root, text="Viel Spaß beim spielen").pack()
+    root.after(1000, game)
 
-canvas = Canvas(root, width = 1920, height = 1080)
-canvas.place(x=0, y=0)
-canvas.create_image( 0, 0, image = bg, anchor = "nw")
-canvas.pack(fill = "both", expand = True)
-
-
+def tutorial():
+    steuerung = Label(root, text="So Schnell wie möglich die linke > Pfeiltaste drücken").pack()
 
 
 
 
-stier = PhotoImage(file="Stier.png")
+def game():
+    global stier, imgid, bg, canvas, top 
+    es = Toplevel()
+    es.title("Einzelspieler")
+    bg = PhotoImage(file="background.png")
+
+    canvas = Canvas(es, width = 1920, height = 1080)
+    canvas.place(x=0, y=0)
+    canvas.create_image( 0, 0, image = bg, anchor = "nw")
+    canvas.pack(fill = "both", expand = True)
+
+    stier = PhotoImage(file="Stier.png")
+
+    imgid=canvas.create_image(300, 736, image=stier, anchor= "w")
+    es.bind("<Key>",partial(movelabel,canvas,imgid))
+
+Tutorialbtn = Button(root, text="Tutorial", command =tutorial, fg="#00EEEE", bg="#727272").pack()
+Einzelspielerbtn = Button(root, text="Einzelspieler", command =delay, fg="#00EEEE", bg="#727272").pack()
 
 
-imgid=canvas.create_image(50, 10, image=stier, anchor= "w")
-root.bind("<Key>",partial(movelabel,canvas,imgid))
+
+
+
 
 root.mainloop()
