@@ -23,10 +23,6 @@ def movelabel(canvas,stier,event): #Funktion um den Stier zu bewegen
         canvas.move(stier, 1920, 0)
     if x >= 1920:
         canvas.move(stier, -1920, 0)
-    if y <= 0:
-        canvas.move(stier, 0, 1080)
-    if y >= 1080:
-        canvas.move(stier, 0, -1080)
 
 def delay():
     hello = Label(root, text="Viel Spaß beim spielen").pack()
